@@ -1,20 +1,18 @@
 package com.xhg.shardingspheredemo.mapper;
 
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xhg.shardingspheredemo.pojo.Orders;
-import com.xhg.shardingspheredemo.pojo.User;
 
 import java.util.List;
 
 /**
  * @Author xiaoh
  * @Description:
- * @create 2020/12/28 10:42
+ * @create 2020/12/29 11:41
  */
-public interface UserMapper extends BaseMapper<User> {
+public interface OrdersMapper extends BaseMapper<Orders> {
 
-    Integer insertUser(User user);
+    Integer insertOrders(Orders orders);
 
-    List<User> selectUserList();
+    List<Orders> selectOrdersList();
 }

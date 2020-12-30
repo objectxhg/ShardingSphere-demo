@@ -4,61 +4,48 @@ server:
   servlet:
     context-path: /ShardingSphere
 
-# 数据源 ds0,ds1
+
 sharding:
-    jdbc:
-      datasource:
-        names: ds0,ds1
+  jdbc:
+    datasource:
+      names: ds0,ds1
+      ds0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/ShardingSphere?characterEncoding=utf-8&&serverTimezone=GMT%2B8
+        username: root
+        password: 123456
+      ds1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/testbootdemo?characterEncoding=utf-8&&serverTimezone=GMT%2B8
+        username: root
+        password: 123456
 
-        ds1:
-          type: com.zaxxer.hikari.HikariDataSource
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          jdbc-url: jdbc:mysql://localhost:3306/testbootdemo?characterEncoding=utf-8&&serverTimezone=GMT%2B8
-          username: root
-          password: 123456
-        ds0:
-          type: com.zaxxer.hikari.HikariDataSource
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          jdbc-url: jdbc:mysql://localhost:3306/ShardingSphere?characterEncoding=utf-8&&serverTimezone=GMT%2B8
-          username: root
-          password: 123456
-
-      # 水平拆分的数据库（表） 配置分库 + 分表策略 行表达式分片策略
-      # 分库策略
-      config:
-        sharding:
-          default-database-strategy:
-            inline:
-              sharding-column: id
-              algorithm-expression: ds$->{id % 2}
-
-          # 分表策略 其中user为逻辑表 分表主要取决于age行
-          tables:
-            user:
-              actual-data-nodes: ds$->{0..1}.user
-              #_$->{0..1}
+    config:
+      sharding:
+        # 分表策略 其中user为逻辑表 分表主要取决于age行
+        tables:
+          user:
+            actual-data-nodes: ds0.user_$->{0..1}
+            key-generate-strategy: id
+            key-generator-name: SNOWFLAKE
+            table-strategy:
+              inline:
+                sharding-column: id
+                #分片算法表达式
+                algorithm-expression: user_$->{id % 2}
         props:
           sql:
             show: true
 
-        tables:
-          user:
-            # 主键列
-            #key-generator-column-name: id
-            table-strategy:
-              inline:
-                sharding-column: age
-                #分片算法表达式
-                algorithm-expression: user
-                #_$->{age % 2}
-
-
-
-# 打印执行的数据库以及语句
-
+# 当遇到相同名字时允许覆盖注册
 spring:
+  # 由于表分片 数据库中多个表结构对应一个实体类 放不进去 所有需要开启覆盖注册
   main:
     allow-bean-definition-overriding: true
+
+
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml

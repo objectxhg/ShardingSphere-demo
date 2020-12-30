@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xhg.shardingspheredemo.mapper.OrdersMapper" >
+
+	<resultMap id="OrdersResultMap" type="com.xhg.shardingspheredemo.pojo.Orders">
+		<id column="order_id" property="orderId"/>
+		<result column="user_id" property="userId"/>
+		<result column="price" property="price"/>
+		<result column="description" property="description"/>
+	</resultMap>
+
+	<sql id="ordersColumn">
+ 		order_id, user_id, price, description
+ 	</sql>
+
+	<insert id="insertOrders" parameterType="com.xhg.shardingspheredemo.pojo.Orders">
+		insert into orders (order_id, user_id, price, description) values (#{orderId}, #{userId}, #{price}, #{description})
+   	</insert>
+
+	<select id="selectOrdersList"  resultMap="OrdersResultMap">
+		select <include refid="ordersColumn"/> from orders
+   	</select>
+
+</mapper>

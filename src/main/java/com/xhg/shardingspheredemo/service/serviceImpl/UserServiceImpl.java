@@ -3,7 +3,6 @@ package com.xhg.shardingspheredemo.service.serviceImpl;
 import com.xhg.shardingspheredemo.mapper.UserMapper;
 import com.xhg.shardingspheredemo.pojo.User;
 import com.xhg.shardingspheredemo.service.UserService;
-import com.xhg.shardingspheredemo.utils.SnowflakeIdWorker;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer addUserService(String name, Integer age) {
 
-        return userMapper.insertUser(new User(SnowflakeIdWorker.generateId(), name, age));
+        return userMapper.insertUser(new User(name, age));
     }
 
     @Override

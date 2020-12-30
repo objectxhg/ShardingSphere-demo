@@ -197,4 +197,7 @@ public class SnowflakeIdWorker {
         }
         System.out.println((System.nanoTime()-startTime)/1000000+"ms");
     }
+
+    public class nextId {
+    }
 }
