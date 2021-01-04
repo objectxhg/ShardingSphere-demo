@@ -60,5 +60,15 @@ public class Orders implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "orderId=" + orderId +
+                ", userId=" + userId +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
 

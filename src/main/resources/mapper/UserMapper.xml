@@ -13,7 +13,7 @@
  	</sql>
 
 	<insert id="insertUser" parameterType="com.xhg.shardingspheredemo.pojo.User">
-   			insert into user (name, age) values (#{name}, #{age})
+   			insert into user (id, name, age) values (null, #{name}, #{age})
    	</insert>
 
 	<select id="selectUserList"  resultMap="UserResultMap">

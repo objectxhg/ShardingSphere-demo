@@ -7,7 +7,7 @@ server:
 
 sharding:
   jdbc:
-    datasource:
+    dataSource:
       names: ds0,ds1
       ds0:
         type: com.alibaba.druid.pool.DruidDataSource
@@ -24,27 +24,37 @@ sharding:
 
     config:
       sharding:
-        # 分表策略 其中user为逻辑表 分表主要取决于age行
         tables:
           user:
-            actual-data-nodes: ds0.user_$->{0..1}
-            key-generate-strategy: id
+            actual-data-nodes: ds0.user
+
+          orders:
+            # orders 分布的节点
+            actual-data-nodes: ds$->{0..1}.orders_$->{0..1}
+            key-generate-strategy: order_id
             key-generator-name: SNOWFLAKE
+            # 分库策略
+            database-strategy:
+              inline:
+                sharding-column: user_id
+                algorithm-expression: ds$->{user_id % 2}
+            # 分片策略
             table-strategy:
               inline:
-                sharding-column: id
-                #分片算法表达式
-                algorithm-expression: user_$->{id % 2}
-        props:
-          sql:
-            show: true
+                sharding-column: order_id
+                algorithm-expression: orders_$->{order_id % 2}
+
+
+      props:
+        sql:
+          show: true
+
 
 # 当遇到相同名字时允许覆盖注册
 spring:
   # 由于表分片 数据库中多个表结构对应一个实体类 放不进去 所有需要开启覆盖注册
   main:
     allow-bean-definition-overriding: true
-
 
 
 mybatis-plus:
