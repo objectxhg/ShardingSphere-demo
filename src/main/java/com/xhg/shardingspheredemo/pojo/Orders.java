@@ -18,15 +18,30 @@ public class Orders implements Serializable {
 
     private Integer userId;
 
+    private Integer userName;
+
     private BigDecimal price;
 
     private String description;
 
-    public Orders(Long orderId, Integer userId, BigDecimal price, String description) {
-        this.orderId = orderId;
-        this.userId = userId;
-        this.price = price;
-        this.description = description;
+
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "orderId=" + orderId +
+                ", userId=" + userId +
+                ", userName=" + userName +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
+    public Integer getUserName() {
+        return userName;
+    }
+
+    public void setUserName(Integer userName) {
+        this.userName = userName;
     }
 
     public Long getOrderId() {
@@ -61,14 +76,6 @@ public class Orders implements Serializable {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "Orders{" +
-                "orderId=" + orderId +
-                ", userId=" + userId +
-                ", price=" + price +
-                ", description='" + description + '\'' +
-                '}';
-    }
+
 }
 

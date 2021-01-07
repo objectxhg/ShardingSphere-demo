@@ -28,9 +28,12 @@ public class OrdersServiceImpl implements OrdersService {
     @Override
     public Integer addOrdersService(Integer userId, BigDecimal price, String description) {
 
-
-
-        return OrdersMapper.insertOrders(new Orders(SnowflakeIdWorker.generateId(), userId, price, description));
+        Orders orders = new Orders();
+        orders.setOrderId(SnowflakeIdWorker.generateId());
+        orders.setUserId(userId);
+        orders.setPrice(price);
+        orders.setDescription(description);
+        return OrdersMapper.insertOrders(orders);
     }
 
     @Override
